@@ -12,6 +12,7 @@
 ## 免责声明
 
 本项目所涉及的任何代码和技术都合法合规,没有利用任何后门或漏洞,其过程完全只是代替人类输入,造成某软件对任何人的封禁一概不负责任.
+
 本项目所实现的功能,人类也可以完全手动实现.
 
 ## 操作步骤
@@ -27,13 +28,19 @@ C:\Program Files\Chrome\Application\chrome.exe
 
 #### A.使用配置文件
 
+0. 前提
+
+安装JRE8并保证全局变量没问题.https://www.java.com/en/download/manual.jsp
+
+达到在cmd里输java可以返回正常信息的标准.
+
 1. 配置`config.properties`
 
 | Key  | 备注  |
 | :------------: | :------------: |
 | PhoneNumber | 电话号码  |
 | DriverLocal | chromedriver.exe 路径 [镜像站](http://npm.taobao.org/mirrors/chromedriver/)(根据Chrome版本下载) |
-| ChromeLocal | chrome.exe 路径  |
+| ChromeLocal | chrome.exe 路径(可选参数)  |
 
 2. 启动程序
 
@@ -48,14 +55,30 @@ java -jar auto-get-fu-card.jar
 | 参数  | 备注  |
 | :------------: | :------------: |
 | -p or -phone  | 电话号码  |
-| -d or -driver | chromedriver.exe 路径  |
-| -c or -chrome | chrome.exe 路径  |
+| -d or -driver | chromedriver.exe 路径 [镜像站](http://npm.taobao.org/mirrors/chromedriver/)(根据Chrome版本下载) |
+| -c or -chrome | chrome.exe 路径(可选参数)  |
 
 示例:
 
 ```java
 java -jar auto-get-fu-card.jar -p 12345678900 -d D:\\chromedriver.exe -c C:\\Program Files\\Chrome\\Application\\chrome.exe
 ```
+
+#### 对于 macOS 和 Linux
+
+请注意下载适合设备系统的 chromedriver.
+<br>macOS 不能与 Linux 通用。   
+<br>请在运行前先赋予 chromedriver 权限，并尝试在 Terminal 运行一次。   
+```
+sudo chmod u+x ./chromedriver
+sudo ./chromedriver
+```
+#### 对于 macOS 用户
+
+在首次运行前，可能会弹出安全性警告阻止 chromedriver 运行。   
+<br>因此，请在首次运行时在 Finder 点选 chromedriver, 按住 Control 然后双击, 在弹出的安全性警告窗口点选「打开」即可。   
+<br>在之后的使用中，就可以直接通过 Terminal 或 Java 直接调用。
+
 
 ### Step2:手机端(能收短信的都行)配置
 
@@ -68,19 +91,20 @@ java -jar auto-get-fu-card.jar -p 12345678900 -d D:\\chromedriver.exe -c C:\\Pro
 
 #### iOS 10 以上版本
 
-1. 在`App Store`里安装 `快捷指令`(就是苹果官方开发的那个)
+1.在`App Store`里安装 `快捷指令`(就是苹果官方开发的那个)
 
-2. 看图操作
+2.看图操作
 
-![1](https://github.com/DrDREAM233/auto-get-fu-card/blob/main/FAQ/iOS1.PNG?raw=true)
-![2](https://github.com/DrDREAM233/auto-get-fu-card/blob/main/FAQ/iOS2.PNG?raw=true)
-![3](https://github.com/DrDREAM233/auto-get-fu-card/blob/main/FAQ/iOS3.PNG?raw=true)
+<img src="https://i.loli.net/2021/02/03/Kktg6F1lDxzULuE.png" alt="drawing" width="300"/>
+<img src="https://i.loli.net/2021/02/03/vDAaS6d12sBZLkm.png" alt="drawing" width="300"/>
+<img src="https://i.loli.net/2021/02/03/7an5sMoEYhkK61H.png" alt="drawing" width="300"/>
 
-3. 因为苹果的限制所以必须收到短信的时候点击运行按钮,拉下菜单就看见了
+3.因为苹果的限制所以必须收到短信的时候点击运行按钮,拉下菜单就看见了
 
 
 #### 树莓派等 Linux 设备: Gammu
 如果你身边有 3G/4G 模块，也可以尝试在树莓派等设备上搭建 Gammu 来实现手机上的效果。   
+本程序已经在 Raspberry Pi 3B + Ubuntu + EC20 模块下测试通过。
 
 1.安装和配置 Gammu.   
 ```

@@ -1,6 +1,7 @@
 package com.dream.autogetfucard.chromeHelper;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -93,32 +94,34 @@ public class ChromeHelper implements CommandLineRunner {
         condition = lock.newCondition();
     }
 
-
-
     @Override
     public void run(String... args) {
         System.setProperty("webdriver.chrome.driver", DriverLocal);
         ChromeOptions options = new ChromeOptions();
-        options.setBinary(ChromeLocal);
-        //WebDriverException="D:\\Program Files\\CentBrowser\\Application\\chrome.exe";
-
+        if(null != ChromeLocal){
+            options.setBinary(ChromeLocal);
+        }
         new Thread(() -> {
             WebDriver driver = new ChromeDriver(options);
             System.out.println("started");
             Arrays.stream(urls).forEach(t -> {
-                driver.get(t);
-                driver.findElement(By.className("btn___SkWL1")).click();
-                driver.findElement(By.id("J-mobile")).sendKeys(PhoneNumber);
-                driver.findElement(By.className("sendCode___16OJu")).click();
                 lock.lock();
                 try {
+                    driver.get(t);
+                    TimeUnit.SECONDS.sleep(5);
+                    driver.findElement(By.className("btn___SkWL1")).click();
+                    driver.findElement(By.id("J-mobile")).sendKeys(PhoneNumber);
+                    driver.findElement(By.className("sendCode___16OJu")).click();
                     if (condition.await(1, TimeUnit.MINUTES)) {
                         driver.findElement(By.id("J-code")).sendKeys(code);
                         driver.findElement(By.className("confirm___ZxG5p")).click();
+                        System.out.println("领取成功，链接：" + t);
                         TimeUnit.MINUTES.sleep(1);
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                } catch (NoSuchElementException e){
+                    System.out.println("领取异常，链接：" + t);
                 } finally {
                     lock.unlock();
                 }
